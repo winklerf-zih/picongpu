@@ -56,7 +56,7 @@ echo -n "present working directory:"
 pwd
 
 
-source $PROJWORK/!TBG_nameProject/picongpu.profile 2>/dev/null
+source $PROJWORK/!TBG_nameProject/$USER/picongpu.profile 2>/dev/null
 if [ $? -ne 0 ] ; then
   echo "Error: picongpu.profile not found in PROJWORK"
   exit 1
@@ -65,7 +65,7 @@ fi
 export SCOREP_ENABLE_PROFILING=no
 export SCOREP_ENABLE_TRACING=yes
 export SCOREP_EXPERIMENT_DIRECTORY=traces
-export SCOREP_CUDA_ENABLE=yes,flushatexit
+export SCOREP_CUDA_ENABLE=yes
 export SCOREP_CUDA_BUFFER=200M
 export SCOREP_TOTAL_MEMORY=1G
 export SCOREP_FILTERING_FILE=!TBG_dstPath/tbg/scorep.filter

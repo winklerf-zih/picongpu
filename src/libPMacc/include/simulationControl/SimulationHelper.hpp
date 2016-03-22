@@ -40,6 +40,10 @@
 #include <iomanip>
 #include <fstream>
 
+#ifdef SCOREP_USER_ENABLE
+#include "scorep/SCOREP_User.h"
+#endif
+
 namespace PMacc
 {
 
@@ -266,6 +270,26 @@ public:
                 roundAvg += tRound.getInterval();
 
                 currentStep++;
+#ifdef SCOREP_USER_ENABLE
+
+                if ( currentStep == 100 ||
+                     currentStep == 900 ||
+                     currentStep == 1599 )
+                {
+                    // disable tracing
+                    Environment<>::get().Manager().waitForAllTasks();
+                    SCOREP_RECORDING_OFF()
+                }
+
+                if ( currentStep == 800 ||
+                     currentStep == 1499 )
+                {
+                    // enable tracing
+                    Environment<>::get().Manager().waitForAllTasks();
+                    SCOREP_RECORDING_ON()
+                }
+ 
+#endif
                 Environment<>::get().SimulationDescription().setCurrentStep( currentStep );
                 /*output after a round*/
                 dumpTimes(tSimCalculation, tRound, roundAvg, currentStep);
@@ -274,6 +298,11 @@ public:
                 /*dump after simulated step*/
                 dumpOneStep(currentStep);
             }
+
+#ifdef SCOREP_USER_ENABLE
+                /* scorep: enable tracing that we trace the function exit */
+                SCOREP_RECORDING_ON()
+#endif
 
             // simulatation end
             Environment<>::get().Manager().waitForAllTasks();
