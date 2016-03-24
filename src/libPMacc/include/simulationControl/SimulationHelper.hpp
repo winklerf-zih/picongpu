@@ -270,6 +270,7 @@ public:
                 roundAvg += tRound.getInterval();
 
                 currentStep++;
+
 #ifdef SCOREP_USER_ENABLE
 
                 if ( currentStep == 100 ||
@@ -299,13 +300,13 @@ public:
                 dumpOneStep(currentStep);
             }
 
-#ifdef SCOREP_USER_ENABLE
-                /* scorep: enable tracing that we trace the function exit */
-                SCOREP_RECORDING_ON()
-#endif
-
             // simulatation end
             Environment<>::get().Manager().waitForAllTasks();
+
+#ifdef SCOREP_USER_ENABLE
+            /* scorep: enable tracing that we trace the function exit */
+            SCOREP_RECORDING_ON()
+#endif
 
             tSimCalculation.toggleEnd();
 
